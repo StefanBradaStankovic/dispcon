@@ -1,4 +1,4 @@
-package dispcon
+package displaycontrol
 
 import (
 	"log"
