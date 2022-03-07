@@ -14,7 +14,7 @@ import (
 //
 
 // Defining gpio.High() parameters for digits 0 1 2 3 4 5 6 7 8 9 A B C D E F
-var gpioDigit = [16][8]bool{
+var gpioDigit = [][]bool{
 	{true, true, true, true, true, true, true, false},     //	0
 	{false, false, true, true, true, false, false, false}, //	1
 	{true, true, false, true, true, true, false, true},    //	2
@@ -33,7 +33,7 @@ var gpioDigit = [16][8]bool{
 	{true, false, false, true, false, true, true, true}}   //	F
 
 // Draw an ordinal number from 0 to 9
-func DisplayDrawNumber(sellectedPins [8]string, number int) {
+func DisplayDrawNumber(sellectedPins []string, number int) {
 
 	PinsResetAll(sellectedPins[:])
 
@@ -52,7 +52,7 @@ func DisplayDrawNumber(sellectedPins [8]string, number int) {
 //
 
 // Flash every segment to visually confirm they all work
-func DisplayCheckSegments(sellectedPins [8]string) {
+func DisplayCheckSegments(sellectedPins []string) {
 
 	for i := 0; i < len(sellectedPins); i++ {
 		DiodeFlash(sellectedPins[i], 100, 400)
@@ -61,7 +61,7 @@ func DisplayCheckSegments(sellectedPins [8]string) {
 }
 
 // Draw a running circle animation
-func DisplayCircleRound(sellectedPins [8]string, speed int) {
+func DisplayCircleRound(sellectedPins []string, speed int) {
 
 	for i := 0; i < len(sellectedPins); i++ {
 		DiodeFlash(sellectedPins[i], time.Duration(speed), 0)
@@ -70,7 +70,7 @@ func DisplayCircleRound(sellectedPins [8]string, speed int) {
 }
 
 // Draw a full circle animation
-func DisplayCircleFlash(sellectedPins [8]string, speed int) {
+func DisplayCircleFlash(sellectedPins []string, speed int) {
 
 	for i := 0; i < len(sellectedPins); i++ {
 		DiodeOn(sellectedPins[i])
@@ -87,7 +87,7 @@ func DisplayCircleFlash(sellectedPins [8]string, speed int) {
 }
 
 // Draw a full circle segment by segment
-func DisplayLoading(sellectedPins [8]string, speed int) {
+func DisplayLoading(sellectedPins []string, speed int) {
 
 	for i := 0; i < len(sellectedPins); i++ {
 		DiodeOn(sellectedPins[i])
@@ -97,7 +97,7 @@ func DisplayLoading(sellectedPins [8]string, speed int) {
 }
 
 // Draw a startup animation
-func DisplayStartupAnimation(sellectedPins [8]string) {
+func DisplayStartupAnimation(sellectedPins []string) {
 
 	DisplayLoading(sellectedPins, 150)
 	DisplayCircleFlash(sellectedPins, 250)
@@ -135,7 +135,7 @@ func DiodeFlash(inputPin string, timeOn time.Duration, timeOff time.Duration) {
 }
 
 // Turn on a number of LEDs permanently by setting the corresponding pins to HIGH
-func DiodeOnCluster(inputPins [8]string, pinState [8]bool) {
+func DiodeOnCluster(inputPins []string, pinState []bool) {
 	// Load all the drivers:
 	if _, err := host.Init(); err != nil {
 		log.Fatal(err)
@@ -149,7 +149,7 @@ func DiodeOnCluster(inputPins [8]string, pinState [8]bool) {
 }
 
 // Turn off a number of LEDs permanently by setting the corresponding pins to LOW
-func DiodeOffCluster(inputPins [8]string, pinState [8]bool) {
+func DiodeOffCluster(inputPins []string, pinState []bool) {
 	// Load all the drivers:
 	if _, err := host.Init(); err != nil {
 		log.Fatal(err)
