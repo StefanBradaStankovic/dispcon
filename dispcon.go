@@ -10,7 +10,7 @@ import (
 )
 
 //
-// Version v0.1.1
+// Version v0.2.1
 //
 
 // Defining gpio.High() parameters for digits 0 1 2 3 4 5 6 7 8 9 A B C D E F
@@ -141,7 +141,7 @@ func DiodeOnCluster(inputPins []string, pinState []bool) {
 		log.Fatal(err)
 	}
 
-	for i := 0; i < 8; i++ {
+	for i := 0; i < len(inputPins); i++ {
 		if pinState[i] {
 			DiodeOn(inputPins[i])
 		}
@@ -155,7 +155,7 @@ func DiodeOffCluster(inputPins []string, pinState []bool) {
 		log.Fatal(err)
 	}
 
-	for i := 0; i < 8; i++ {
+	for i := 0; i < len(inputPins); i++ {
 		if pinState[i] {
 			DiodeOff(inputPins[i])
 		}
@@ -206,20 +206,9 @@ func DiodeOff(inputPin string) {
 
 // RESET ALL PINS BY SETTING THEM TO LOW
 func PinsResetAll(sellectedPins []string) {
+
 	for i := 0; i < len(sellectedPins); i++ {
 		DiodeOff(sellectedPins[i])
 	}
 
-	// OLD CODE 01.03.2022.
-	//
-	// Changed the code to be more flexible
-	//
-	// diodeOff(Pin01)
-	// diodeOff(Pin02)
-	// diodeOff(Pin04)
-	// diodeOff(Pin05)
-	// diodeOff(Pin06)
-	// diodeOff(Pin07)
-	// diodeOff(Pin09)
-	// diodeOff(Pin10)
 }
