@@ -10,46 +10,24 @@ import (
 )
 
 //
-// Version v0.2.1
+// Version v1.0.0
 //
 
-// Defining gpio.High() parameters for digits 0 1 2 3 4 5 6 7 8 9 A B C D E F
-var gpioDigit = [][]bool{
-	{true, true, true, true, true, true, true, false},     //	0
-	{false, false, true, true, true, false, false, false}, //	1
-	{true, true, false, true, true, true, false, true},    //	2
-	{false, true, true, true, true, true, false, true},    //	3
-	{false, false, true, true, true, false, true, true},   //	4
-	{false, true, true, true, false, true, true, true},    //	5
-	{true, true, true, true, false, true, true, true},     //	6
-	{false, false, true, true, true, true, false, false},  //	7
-	{true, true, true, true, true, true, true, true},      //	8
-	{false, true, true, true, true, true, true, true},     //	9
-	{true, false, true, true, true, true, true, true},     //	A
-	{true, true, true, true, false, false, true, true},    //	B
-	{true, true, false, true, false, true, true, false},   //	C
-	{true, true, true, true, true, false, false, true},    //	D
-	{true, true, false, true, false, true, true, true},    //	E
-	{true, false, false, true, false, true, true, true}}   //	F
-
+// To propperly define sellectedDigits[][]bool values, it is necessary to map out your display
+// according to its pin numbers - eg. 1-10 for single digit screen or 1-12 for quad digit screen with sellector pins
+//
 // Draw an ordinal number from 0 to 9
-func DisplayDrawNumber(sellectedPins []string, number int) {
+func DisplayDrawNumber(sellectedPins []string, sellectedDigits [][]bool, number int) {
 
 	PinsResetAll(sellectedPins[:])
 
 	if number >= 0 && number <= 15 {
-		DiodeOnCluster(sellectedPins, gpioDigit[number])
+		DiodeOnCluster(sellectedPins, sellectedDigits[number])
 	} else {
 		log.Println("Invalid number")
 	}
 
 }
-
-//
-//
-// D I S P L A Y     A N I M A T I O N S
-//
-//
 
 // Flash every segment to visually confirm they all work
 func DisplayCheckSegments(sellectedPins []string) {
@@ -175,11 +153,12 @@ func DiodeOn(inputPin string) {
 		log.Fatal("Failed to open GPIO pin")
 	}
 
-	// Set pin to LOW
-	if err := pin.Out(gpio.Low); err != nil {
+	// Set pin to IN
+	if err := pin.In(gpio.PullNoChange, gpio.NoEdge); err != nil {
 		log.Fatal(err)
 	}
 
+	// Set pin to HIGH
 	if err := pin.Out(gpio.High); err != nil {
 		log.Fatal(err)
 	}
@@ -198,17 +177,41 @@ func DiodeOff(inputPin string) {
 		log.Fatal("Failed to open GPIO pin")
 	}
 
+	// Set pin to IN
+	if err := pin.In(gpio.PullNoChange, gpio.NoEdge); err != nil {
+		log.Fatal(err)
+	}
+
 	// Set pin to LOW
 	if err := pin.Out(gpio.Low); err != nil {
 		log.Fatal(err)
 	}
 }
 
-// RESET ALL PINS BY SETTING THEM TO LOW
+// Completelly isolate the diode by setting the pin to IN
+func DiodeIn(inputPin string) {
+	// Load all the drivers:
+	if _, err := host.Init(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Open pin for communication
+	pin := gpioreg.ByName(inputPin)
+	if pin == nil {
+		log.Fatal("Failed to open GPIO pin")
+	}
+
+	// Set pin to IN
+	if err := pin.In(gpio.PullNoChange, gpio.NoEdge); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// RESET ALL PINS BY SETTING THEM TO IN
 func PinsResetAll(sellectedPins []string) {
 
 	for i := 0; i < len(sellectedPins); i++ {
-		DiodeOff(sellectedPins[i])
+		DiodeIn(sellectedPins[i])
 	}
 
 }
