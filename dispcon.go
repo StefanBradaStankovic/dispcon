@@ -10,7 +10,7 @@ import (
 )
 
 //
-// Version v1.0.1
+// Version v1.0.2
 //
 //
 // To propperly define sellectedDigits[][]bool values, it is necessary to map out your display
@@ -19,7 +19,7 @@ import (
 // Draw an ordinal number from 0 to 9
 func DisplayDrawNumber(sellectedPins []string, sellectedDigits [][]bool, number int) {
 
-	PinsResetAll(sellectedPins[:])
+	PinsResetLow(sellectedPins[:])
 
 	if number >= 0 && number <= 15 {
 		DiodeOnClusterSellect(sellectedPins, sellectedDigits[number])
@@ -231,11 +231,19 @@ func DiodeIn(inputPin string) {
 	}
 }
 
+// RESET ALL PINS BY SETTING THEM TO LOW
+func PinsResetLow(sellectedPins []string) {
+
+	for i := 0; i < len(sellectedPins); i++ {
+		DiodeOff(sellectedPins[i])
+	}
+
+}
+
 // RESET ALL PINS BY SETTING THEM TO IN
-func PinsResetAll(sellectedPins []string) {
+func PinsResetIn(sellectedPins []string) {
 
 	for i := 0; i < len(sellectedPins); i++ {
 		DiodeIn(sellectedPins[i])
 	}
-
 }
