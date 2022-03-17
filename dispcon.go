@@ -12,7 +12,7 @@ import (
 //
 // Version v1.0.0
 //
-
+//
 // To propperly define sellectedDigits[][]bool values, it is necessary to map out your display
 // according to its pin numbers - eg. 1-10 for single digit screen or 1-12 for quad digit screen with sellector pins
 //
