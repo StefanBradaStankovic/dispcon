@@ -10,7 +10,7 @@ import (
 )
 
 //
-// Version v1.0.0
+// Version v1.0.1
 //
 //
 // To propperly define sellectedDigits[][]bool values, it is necessary to map out your display
@@ -22,7 +22,7 @@ func DisplayDrawNumber(sellectedPins []string, sellectedDigits [][]bool, number 
 	PinsResetAll(sellectedPins[:])
 
 	if number >= 0 && number <= 15 {
-		DiodeOnCluster(sellectedPins, sellectedDigits[number])
+		DiodeOnClusterSellect(sellectedPins, sellectedDigits[number])
 	} else {
 		log.Println("Invalid number")
 	}
@@ -113,7 +113,31 @@ func DiodeFlash(inputPin string, timeOn time.Duration, timeOff time.Duration) {
 }
 
 // Turn on a number of LEDs permanently by setting the corresponding pins to HIGH
-func DiodeOnCluster(inputPins []string, pinState []bool) {
+func DiodeOnCluster(inputPins []string) {
+	// Load all the drivers:
+	if _, err := host.Init(); err != nil {
+		log.Fatal(err)
+	}
+
+	for i := 0; i < len(inputPins); i++ {
+		DiodeOn(inputPins[i])
+	}
+}
+
+// Turn off a number of LEDs permanently by setting the corresponding pins to LOW
+func DiodeOffCluster(inputPins []string) {
+	// Load all the drivers:
+	if _, err := host.Init(); err != nil {
+		log.Fatal(err)
+	}
+
+	for i := 0; i < len(inputPins); i++ {
+		DiodeOff(inputPins[i])
+	}
+}
+
+// Turn on a number of LEDs permanently by setting the corresponding pins to HIGH
+func DiodeOnClusterSellect(inputPins []string, pinState []bool) {
 	// Load all the drivers:
 	if _, err := host.Init(); err != nil {
 		log.Fatal(err)
@@ -127,7 +151,7 @@ func DiodeOnCluster(inputPins []string, pinState []bool) {
 }
 
 // Turn off a number of LEDs permanently by setting the corresponding pins to LOW
-func DiodeOffCluster(inputPins []string, pinState []bool) {
+func DiodeOffClusterSellect(inputPins []string, pinState []bool) {
 	// Load all the drivers:
 	if _, err := host.Init(); err != nil {
 		log.Fatal(err)
