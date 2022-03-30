@@ -10,7 +10,7 @@ import (
 )
 
 //
-// Version v1.1.0
+// Version v1.2.0
 //
 //
 // To propperly define sellectedDigits[][]bool values, it is necessary to map out your display
@@ -263,4 +263,21 @@ func PinsResetIn(sellectedPins []string) {
 	for i := 0; i < len(sellectedPins); i++ {
 		DiodeIn(sellectedPins[i])
 	}
+}
+
+// Split an integer into an array with 4 digits
+func SplitDigits(number int) []int {
+
+	var digits = []int{0, 0, 0, 0}
+	if number >= 0 && number <= 9999 {
+
+		digits[3] = number % 10
+		digits[2] = (number / 10) % 10
+		digits[1] = (number / 100) % 10
+		digits[0] = number / 1000
+	} else {
+		log.Println("Number out of bounds !!!")
+	}
+
+	return digits
 }
