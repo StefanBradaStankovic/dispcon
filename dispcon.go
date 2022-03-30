@@ -10,7 +10,7 @@ import (
 )
 
 //
-// Version v1.0.2
+// Version v1.1.0
 //
 //
 // To propperly define sellectedDigits[][]bool values, it is necessary to map out your display
@@ -81,6 +81,23 @@ func DisplayStartupAnimation(sellectedPins []string) {
 	DisplayCircleFlash(sellectedPins, 250)
 	DisplayCircleFlash(sellectedPins, 250)
 	DisplayCircleFlash(sellectedPins, 1500)
+}
+
+// Draw four different digits on a quad digit 8-segment display
+func DisplayDrawNumberMultiple(sellectedPins []string, sellectorPins []string, sellectedDigits [][]bool, digits *[]int, mainDone *int) {
+
+	PinsResetLow(sellectedPins[:])
+	PinsResetIn(sellectorPins[:])
+
+	for *mainDone != 1 {
+
+		for i := 0; i < 4; i++ {
+			DiodeOff(sellectorPins[i])
+			DisplayDrawNumber(sellectedPins, sellectedDigits, (*digits)[i])
+			time.Sleep(1 * time.Millisecond)
+			DiodeIn(sellectorPins[i])
+		}
+	}
 }
 
 // Flash a LED by setting a pin to HIGH for timeOn amount of milliseconds with a latency of timeOff milliseconds
