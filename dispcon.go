@@ -1,5 +1,5 @@
 //
-//  Version v1.3.0
+//  Version v1.3.1
 //
 //
 
@@ -58,7 +58,7 @@ func diodeSetState(diodePinName string, diodeState int) {
 func diodeArraySetState(diodePinNames []string, diodeStates []int, defaultState int) {
 	if len(diodeStates) == 0 {
 		for i := 0; i < len(diodePinNames); i++ {
-			diodeStates[i] = defaultState
+			diodeStates = append(diodeStates, defaultState)
 		}
 	}
 
