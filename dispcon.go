@@ -1,3 +1,8 @@
+//
+//  Version v2.0.1
+//
+//
+
 package dispcon
 
 import (
@@ -7,11 +12,6 @@ import (
 	"periph.io/x/conn/v3/gpio/gpioreg"
 	"periph.io/x/host/v3"
 )
-
-//
-//  Version v2.0.0
-//
-//
 
 //  Changes state of a LED diode to:
 //

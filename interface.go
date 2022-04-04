@@ -1,3 +1,8 @@
+//
+//  Version v2.0.1
+//
+//
+
 package dispcon
 
 import (
@@ -68,11 +73,11 @@ func DisplaySingleDigit(diodePinNames []string, diodeStates [][]int, number int)
 }
 
 //  Driver for displaying symbols on a multiple digit screen
-func DisplayMultipleDigits(diodePinNames []string, groundPinNames []string, diodeStates [][]int, digits *[]int, mainDone *int) {
+func DisplayMultipleDigits(diodePinNames []string, groundPinNames []string, diodeStates [][]int, digits *[]int, routineIsFinished *int) {
 
 	DiodeArrayIn(diodePinNames)
 
-	for *mainDone != 1 {
+	for *routineIsFinished != 1 {
 
 		for i := 0; i < len(*digits); i++ {
 			DiodeOff(groundPinNames[i])
